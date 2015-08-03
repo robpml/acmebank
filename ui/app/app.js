@@ -4,6 +4,7 @@ angular.module('sample', [
   'ngCkeditor',
   'ui.bootstrap',
   'ngJsonExplorer',
+  'hljs',
   'ml.common',
   'ml.search',
   'ml.search.tpls',

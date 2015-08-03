@@ -69,6 +69,43 @@
     </search:range>
   </search:constraint>
 
+  <search:constraint name="Approval Status">
+    <search:range type="xs:string" facet="true">
+      <search:facet-option>limit=5</search:facet-option>
+      <search:facet-option>frequency-order</search:facet-option>
+      <search:facet-option>descending</search:facet-option>
+      <search:element ns="" name="ApprovalStatus"/>
+    </search:range>
+  </search:constraint>
+
+  <search:constraint name="Match Status">
+    <search:range type="xs:string" facet="true">
+      <search:facet-option>limit=5</search:facet-option>
+      <search:facet-option>frequency-order</search:facet-option>
+      <search:facet-option>descending</search:facet-option>
+      <search:element ns="" name="MatchStatus"/>
+    </search:range>
+  </search:constraint>
+
+    <search:constraint name="Book Name">
+    <search:range type="xs:string" facet="true">
+      <search:facet-option>limit=5</search:facet-option>
+      <search:facet-option>frequency-order</search:facet-option>
+      <search:facet-option>descending</search:facet-option>
+      <search:element ns="http://nomura.com/slc" name="BookName"/>
+    </search:range>
+  </search:constraint>
+
+    <search:constraint name="Trade operation">
+    <search:range type="xs:string" facet="true">
+      <search:facet-option>limit=5</search:facet-option>
+      <search:facet-option>frequency-order</search:facet-option>
+      <search:facet-option>descending</search:facet-option>
+      <search:element ns="http://nomura.com/slc" name="TradeOperation"/>
+    </search:range>
+  </search:constraint>
+
+
   <!-- example facet constraint below -->
   <!--
   <search:constraint name="myconstraint">

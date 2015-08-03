@@ -4,6 +4,7 @@ angular.module('sample', [
   'ngCkeditor',
   'ui.bootstrap',
   'ngJsonExplorer',
+  'hljs',
   'ml.common',
   'ml.search',
   'ml.search.tpls',
@@ -170,7 +171,7 @@ angular.module('sample.create', []);
         detail: {}
       };
 
-      mlRest.getDocument(uri, { format: 'json' }).then(function(response) {
+      mlRest.getDocument(uri, { format: 'json', transform: 'indent' }).then(function(response) {
         model.detail = response.data;
       });
 
