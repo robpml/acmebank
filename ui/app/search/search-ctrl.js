@@ -282,7 +282,7 @@
           func: function (chart) {
            //setup some logic for the chart
           }
-        },//End of chartConfig3
+        }//End of chartConfig3
       }); //End of angular.extend($scope)
 
     }]);
