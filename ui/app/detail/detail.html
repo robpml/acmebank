@@ -1,5 +1,21 @@
 <div class="row detail">
   <!-- display JSON data
   <json-explorer data="model.detail"></json-explorer> -->
-  <div hljs source="model.detail" language="xml"></div>
+  <tabset>
+  	<tab>
+  		<tab-heading>XML</tab-heading>
+  		<div hljs source="model.detail" language="xml"></div>
+  	</tab>
+
+  	<tab>
+  		<tab-heading>json</tab-heading>
+  		<json-explorer data="model.detail"></json-explorer>
+  	</tab>
+
+  	<tab>
+  		<tab-heading>RAW</tab-heading>
+  		<div hljs source="model.detail"</div>
+  	</tab>
+
+  </tabset>	
 </div>

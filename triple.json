@@ -1,0 +1,7 @@
+{
+  "triple": {
+    "subject": "/live/trading/FSC/FSC_1_1_1",
+    "predicate": "http://nomura.com/tdvlink",
+    "object": {"value:" "/live/trading/SLC/SLC_1_1", "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"}
+  }
+}

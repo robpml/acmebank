@@ -16,13 +16,15 @@
     "highlightjs": "8.0.0",
     "ml-utils": "withjam/ml-utils",
     "ml-search-ng": "~0.0.6",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "highcharts-ng": "~0.0.8",
+    "highcharts": "~4.1.7"
   },
   "devDependencies": {
     "angular-mocks": "1.2.14",
     "angular-scenario": "1.2.14"
   },
-    "resolutions": {
+  "resolutions": {
     "angular": "1.2.14"
   }
 }

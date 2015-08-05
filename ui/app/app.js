@@ -5,6 +5,7 @@ angular.module('sample', [
   'ui.bootstrap',
   'ngJsonExplorer',
   'hljs',
+  'highcharts-ng',
   'ml.common',
   'ml.search',
   'ml.search.tpls',
