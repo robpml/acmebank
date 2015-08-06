@@ -105,6 +105,10 @@
     </search:range>
   </search:constraint>
 
+  <!-- show all collections as facets -->
+  <search:constraint name="Category">
+    <search:collection prefix="" facet="true"/>
+  </search:constraint>
 
   <!-- example facet constraint below -->
   <!--

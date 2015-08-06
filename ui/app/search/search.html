@@ -1,40 +1,27 @@
-<h1>Sample MarkLogic Application</h1>
+<h1>ACME Bank - Search</h1>
 <div ng-show="!model.user.authenticated">Please log in to see content</div>
 <div class="row">
-<tabset>
+  <tabset>
     <tab>
       <tab-heading>Search</tab-heading>
- 
-        <ml-facets class="col-md-3" facets="model.search.facets" toggle="toggleFacet(facet, value)"></ml-facets>
-        <div class="col-md-9">
-          <h3 ng-if="model.search.total === 0">No results to show</h3>
+      <ml-facets class="col-md-3" facets="model.search.facets" toggle="toggleFacet(facet, value)"></ml-facets>
+      <div class="col-md-9">
+        <h3 ng-if="model.search.total === 0">No results to show</h3>
 
-          <div ng-if="model.search.total > 0" class="results">
+        <div ng-if="model.search.total > 0" class="results">
 
-            <pagination ng-model="model.page" ng-change="search()" max-size="10" boundary-links="true"
-                        total-items="model.search.total" items-per-page="model.search['page-length']"></pagination>
+          <pagination ng-model="model.page" ng-change="search()" max-size="10" boundary-links="true"
+                      total-items="model.search.total" items-per-page="model.search['page-length']"></pagination>
 
-            <ml-metrics search="model.search"></ml-metrics>
-            <ml-results results="model.search.results"></ml-results>
-          </div>
+          <ml-metrics search="model.search"></ml-metrics>
+          <ml-results results="model.search.results"></ml-results>
         </div>
-      </tab>
-    <tab>
-      <tab-heading>Charts</tab-heading>
-      <div class="panel.panel-default">
-        <highchart config="chartConfig"></highchart>
       </div>
     </tab>
     <tab>
-      <tab-heading>Charts 2</tab-heading>
+      <tab-heading>Advanced Search</tab-heading>
       <div class="panel.panel-default">
-        <highchart config="chartConfig2"></highchart>
-      </div>
-    </tab>
-    <tab>
-      <tab-heading>Charts 3</tab-heading>
-      <div class="panel.panel-default">
-        <highchart config="chartConfig3"></highchart>
+        <div>Hello</div>
       </div>
     </tab>
   </tabset>

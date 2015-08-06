@@ -12,6 +12,7 @@ angular.module('sample', [
   'ml.utils',
   'sample.user',
   'sample.search',
+  'sample.charts',
   'sample.common',
   'sample.detail',
   'sample.create'
@@ -37,6 +38,10 @@ angular.module('sample', [
         templateUrl: '/create/create.html',
         controller: 'CreateCtrl'
       })
+      .when('/charts', {
+        templateUrl: '/charts/charts.html',
+        controller: 'ChartsCtrl'
+      })
       .when('/detail', {
         templateUrl: '/detail/detail.html',
         controller: 'DetailCtrl'
@@ -50,148 +55,11 @@ angular.module('sample', [
       });
   }]);
 
-
-angular.module('sample.common', [])
-  .filter('object2Array', function() {
-    'use strict';
-
-    return function(input) {
-      var out = [];
-      for (var name in input) {
-        input[name].__key = name;
-        out.push(input[name]);
-      }
-      return out;
-    };
-});
-
 (function () {
   'use strict';
 
-  angular.module('sample.detail')
-    .controller('DetailCtrl', ['$scope', 'MLRest', '$routeParams', function ($scope, mlRest, $routeParams) {
-      var uri = $routeParams.uri;
-      var model = {
-        // your model stuff here
-        detail: {}
-      };
-
-      mlRest.getDocument(uri, { format: 'json', transform: 'indent' }).then(function(response) {
-        model.detail = response.data;
-      });
-
-      angular.extend($scope, {
-        model: model
-
-      });
-    }]);
-}());
-
-
-angular.module('sample.detail', []);
-
-// Copied from https://docs.angularjs.org/api/ng/service/$compile
-angular.module('sample.create')
-  .directive('compile', function($compile) {
-    'use strict';
-
-    // directive factory creates a link function
-    return function(scope, element, attrs) {
-      scope.$watch(
-        function(scope) {
-           // watch the 'compile' expression for changes
-          return scope.$eval(attrs.compile);
-        },
-        function(value) {
-          // when the 'compile' expression changes
-          // assign it into the current DOM
-          element.html(value);
-
-          // compile the new DOM and link it to the current
-          // scope.
-          // NOTE: we only compile .childNodes so that
-          // we don't get into infinite loop compiling ourselves
-          $compile(element.contents())(scope);
-        }
-      );
-    };
-  });
-
-(function () {
-  'use strict';
-
-  angular.module('sample.create')
-    .controller('CreateCtrl', ['$scope', 'MLRest', '$window', 'User', function ($scope, mlRest, win, user) {
-      var model = {
-        person: {
-          isActive: true,
-          balance: 0,
-          picture: 'http://placehold.it/32x32',
-          age: 0,
-          eyeColor: '',
-          name: '',
-          gender: '',
-          company: '',
-          email: '',
-          phone: '',
-          address: '',
-          about: '',
-          registered: '',
-          latitude: 0,
-          longitude: 0,
-          tags: [],
-          friends: [],
-          greeting: '',
-          favoriteFruit: ''
-        },
-        newTag: '',
-        user: user
-      };
-
-      angular.extend($scope, {
-        model: model,
-        editorOptions: {
-          height: '100px',
-          toolbarGroups: [
-            { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
-            { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-            { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
-            { name: 'links' }
-          ],
-          //override default options
-          toolbar: '',
-          /* jshint camelcase: false */
-          toolbar_full: ''
-        },
-        submit: function() {
-          mlRest.createDocument($scope.model.person, {
-            format: 'json',
-            directory: '/content/',
-            extension: '.json'
-            // TODO: add read/update permissions here like this:
-            // 'perm:sample-role': 'read',
-            // 'perm:sample-role': 'update'
-          }).then(function(response) {
-            win.location.href = '/detail?uri=' + response.replace(/(.*\?uri=)/, '');
-          });
-        },
-        addTag: function() {
-          model.person.tags.push(model.newTag);
-          model.newTag = '';
-        }
-      });
-    }]);
-}());
-
-
-angular.module('sample.create', []);
-
-(function () {
-  'use strict';
-
-  angular.module('sample.search')
-    .controller('SearchCtrl', 
-                ['$scope', '$location', 'User', 'MLSearchFactory', 'MLRemoteInputService', function ($scope, $location, user, searchFactory, remoteInput) {
+  angular.module('sample.charts')
+    .controller('ChartsCtrl', ['$scope', '$location', 'User', 'MLSearchFactory', 'MLRemoteInputService', function ($scope, $location, user, searchFactory, remoteInput) {
       var mlSearch = searchFactory.newContext(),
           model = {
             page: 1,
@@ -222,7 +90,7 @@ angular.module('sample.create', []);
             search();
           });
         });
-      })();
+      })();//end of function init
 
       function updateSearchResults(data) {
         model.search = data;
@@ -231,7 +99,7 @@ angular.module('sample.create', []);
 
         remoteInput.setInput( model.qtext );
         $location.search( mlSearch.getParams() );
-      }
+      }//end of function updateSearchResults
 
       function search(qtext) {
         if ( !model.user.authenticated ) {
@@ -248,7 +116,7 @@ angular.module('sample.create', []);
           .setPage(model.page)
           .search()
           .then(updateSearchResults);
-      }
+      }// end of function search
 
       angular.extend($scope, {
         model: model,
@@ -305,8 +173,8 @@ angular.module('sample.create', []);
           func: function (chart) {
            //setup some logic for the chart
           }
-        },//End of chartConfig1
-          
+        },//end of chartConfig
+        
         chartConfig2: {
           options: {
               //This is the Main Highcharts chart config. Any Highchart options are valid here.
@@ -470,13 +338,230 @@ angular.module('sample.create', []);
           func: function (chart) {
            //setup some logic for the chart
           }
-        },//End of chartConfig3
-      }); //End of angular.extend($scope)
+        }//End of chartConfig3
+
+
+
+      });//end of angular extend
 
     }]);
 }());
 
 
+angular.module('sample.charts', []);
+
+
+angular.module('sample.common', [])
+  .filter('object2Array', function() {
+    'use strict';
+
+    return function(input) {
+      var out = [];
+      for (var name in input) {
+        input[name].__key = name;
+        out.push(input[name]);
+      }
+      return out;
+    };
+});
+
+(function () {
+  'use strict';
+
+  angular.module('sample.detail')
+    .controller('DetailCtrl', ['$scope', 'MLRest', '$routeParams', function ($scope, mlRest, $routeParams) {
+      var uri = $routeParams.uri;
+      var model = {
+        // your model stuff here
+        detail: {}
+      };
+
+      mlRest.getDocument(uri, { format: 'json', transform: 'indent' }).then(function(response) {
+        model.detail = response.data;
+      });
+
+      angular.extend($scope, {
+        model: model
+
+      });
+    }]);
+}());
+
+
+angular.module('sample.detail', []);
+
+// Copied from https://docs.angularjs.org/api/ng/service/$compile
+angular.module('sample.create')
+  .directive('compile', function($compile) {
+    'use strict';
+
+    // directive factory creates a link function
+    return function(scope, element, attrs) {
+      scope.$watch(
+        function(scope) {
+           // watch the 'compile' expression for changes
+          return scope.$eval(attrs.compile);
+        },
+        function(value) {
+          // when the 'compile' expression changes
+          // assign it into the current DOM
+          element.html(value);
+
+          // compile the new DOM and link it to the current
+          // scope.
+          // NOTE: we only compile .childNodes so that
+          // we don't get into infinite loop compiling ourselves
+          $compile(element.contents())(scope);
+        }
+      );
+    };
+  });
+
+(function () {
+  'use strict';
+
+  angular.module('sample.create')
+    .controller('CreateCtrl', ['$scope', 'MLRest', '$window', 'User', function ($scope, mlRest, win, user) {
+      var model = {
+        person: {
+          isActive: true,
+          balance: 0,
+          picture: 'http://placehold.it/32x32',
+          age: 0,
+          eyeColor: '',
+          name: '',
+          gender: '',
+          company: '',
+          email: '',
+          phone: '',
+          address: '',
+          about: '',
+          registered: '',
+          latitude: 0,
+          longitude: 0,
+          tags: [],
+          friends: [],
+          greeting: '',
+          favoriteFruit: ''
+        },
+        newTag: '',
+        user: user
+      };
+
+      angular.extend($scope, {
+        model: model,
+        editorOptions: {
+          height: '100px',
+          toolbarGroups: [
+            { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
+            { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+            { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
+            { name: 'links' }
+          ],
+          //override default options
+          toolbar: '',
+          /* jshint camelcase: false */
+          toolbar_full: ''
+        },
+        submit: function() {
+          mlRest.createDocument($scope.model.person, {
+            format: 'json',
+            directory: '/content/',
+            extension: '.json'
+            // TODO: add read/update permissions here like this:
+            // 'perm:sample-role': 'read',
+            // 'perm:sample-role': 'update'
+          }).then(function(response) {
+            win.location.href = '/detail?uri=' + response.replace(/(.*\?uri=)/, '');
+          });
+        },
+        addTag: function() {
+          model.person.tags.push(model.newTag);
+          model.newTag = '';
+        }
+      });
+    }]);
+}());
+
+
+angular.module('sample.create', []);
+
+(function () {
+  'use strict';
+
+  angular.module('sample.search')
+    .controller('SearchCtrl', ['$scope', '$location', 'User', 'MLSearchFactory', 'MLRemoteInputService', function ($scope, $location, user, searchFactory, remoteInput) {
+      var mlSearch = searchFactory.newContext(),
+          model = {
+            page: 1,
+            qtext: '',
+            search: {},
+            user: user
+          };
+
+      (function init() {
+        // wire up remote input subscription
+        remoteInput.initCtrl($scope, model, mlSearch, search);
+
+        // run a search when the user logs in
+        $scope.$watch('model.user.authenticated', function() {
+          search();
+        });
+
+        // capture initial URL params in mlSearch and ctrl model
+        mlSearch.fromParams().then(function() {
+          // if there was remote input, capture it instead of param
+          mlSearch.setText(model.qtext);
+          updateSearchResults({});
+        });
+
+        // capture URL params (forward/back, etc.)
+        $scope.$on('$locationChangeSuccess', function(e, newUrl, oldUrl){
+          mlSearch.locationChange( newUrl, oldUrl ).then(function() {
+            search();
+          });
+        });
+      })();
+
+      function updateSearchResults(data) {
+        model.search = data;
+        model.qtext = mlSearch.getText();
+        model.page = mlSearch.getPage();
+
+        remoteInput.setInput( model.qtext );
+        $location.search( mlSearch.getParams() );
+      }
+
+      function search(qtext) {
+        if ( !model.user.authenticated ) {
+          model.search = {};
+          return;
+        }
+
+        if ( arguments.length ) {
+          model.qtext = qtext;
+        }
+
+        mlSearch
+          .setText(model.qtext)
+          .setPage(model.page)
+          .search()
+          .then(updateSearchResults);
+      }
+
+      angular.extend($scope, {
+        model: model,
+        search: search,
+        toggleFacet: function toggleFacet(facetName, value) {
+          mlSearch
+            .toggleFacet( facetName, value )
+            .search()
+            .then(updateSearchResults);
+        }
+      });
+
+    }]);
+}());
 
 
 angular.module('sample.search', []);

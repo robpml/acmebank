@@ -12,6 +12,7 @@ angular.module('sample', [
   'ml.utils',
   'sample.user',
   'sample.search',
+  'sample.charts',
   'sample.common',
   'sample.detail',
   'sample.create'
@@ -36,6 +37,10 @@ angular.module('sample', [
       .when('/create', {
         templateUrl: '/create/create.html',
         controller: 'CreateCtrl'
+      })
+      .when('/charts', {
+        templateUrl: '/charts/charts.html',
+        controller: 'ChartsCtrl'
       })
       .when('/detail', {
         templateUrl: '/detail/detail.html',
