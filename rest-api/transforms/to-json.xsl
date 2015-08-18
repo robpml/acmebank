@@ -30,7 +30,7 @@ For example, an XSL transform named add-attr must be contained in a file named a
   <xsl:param name="params" as="map:map"/>
 
   <xsl:variable name="highlight" select="map:get($params, 'highlight')"/>
-  <xsl:variable name="config" select="json:config('full')"/>
+  <xsl:variable name="config" select="json:config('custom')"/>
   <xsl:variable name="_" select="map:put($config, 'array-element-names', (
     ))"/>
 

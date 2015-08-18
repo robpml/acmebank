@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('sample.charts')
-    .controller('ChartsCtrl', ['$scope', '$location', 'User', 'MLSearchFactory', 'MLRemoteInputService', function ($scope, $location, user, searchFactory, remoteInput) {
+    .controller('ChartsCtrl', ['$scope', '$http', '$location', 'User', 'MLSearchFactory', 'MLRemoteInputService', function ($scope, $http, $location, user, searchFactory, remoteInput) {
       var mlSearch = searchFactory.newContext(),
           model = {
             page: 1,
@@ -42,6 +42,23 @@
 
         remoteInput.setInput( model.qtext );
         $location.search( mlSearch.getParams() );
+
+        var series1 = [];
+        //var series1 = [{data:[],
+        //                name:''}];
+
+        if (model.search && model.search.facets && model.search.facets['Trade operation']) {
+          angular.forEach(model.search.facets['Trade operation'].facetValues, function(value, index) {
+            series1.push(value.count);
+            //series1.push({data:value.count,name:value.name});
+            
+          });
+        }
+        $scope.chartConfig.series = [{
+             //data: series1.data,
+             //name: series1.name
+             data: series1
+          }];
       }//end of function updateSearchResults
 
       function search(qtext) {
@@ -70,7 +87,7 @@
             .search()
             .then(updateSearchResults);
         },
-                  //This is not a highcharts object. It just looks a little like one!
+        //This is not a highcharts object. It just looks a little like one!
         chartConfig: {
           options: {
               //This is the Main Highcharts chart config. Any Highchart options are valid here.
@@ -88,9 +105,9 @@
           //The below properties are watched separately for changes.
 
           //Series object (optional) - a list of series using normal highcharts series options.
-          series: [{
-             data: [10, 15, 12, 8, 7]
-          }],
+          //series: [{
+             //data: [10, 15, 12, 8, 7]
+          //}],
           //Title configuration (optional)
           title: {
              text: 'Cancelled Trades per day'
@@ -103,7 +120,7 @@
           xAxis: {
           currentMin: 0,
           currentMax: 20,
-          title: {text: 'values'}
+          title: {text: 'Trade status pre-cancel'}
           },
           //Whether to use HighStocks instead of HighCharts (optional). Defaults to false.
           useHighStocks: false,
@@ -132,7 +149,7 @@
           //The below properties are watched separately for changes.
 
           //Series object (optional) - a list of series using normal highcharts series options.
-            series: [{
+          series: [{
                 type: 'column',
                 name: 'Jane',
                 data: [3, 2, 1, 3, 4, 3, 2, 5, 6, 2, 5, 1]
@@ -200,7 +217,7 @@
            //setup some logic for the chart
           }
         }, //End of chartConfig2
-        
+
         chartConfig3: {
           options: {
               //This is the Main Highcharts chart config. Any Highchart options are valid here.
@@ -248,7 +265,7 @@
           }],
           //Title configuration (optional)
           title: {
-             text: 'Random data points from function'
+             text: 'Book Value ($USD)'
           },
           //Boolean to control showng loading status on chart (optional)
           //Could be a string if you want to show specific loading text.
@@ -281,7 +298,187 @@
           func: function (chart) {
            //setup some logic for the chart
           }
-        }//End of chartConfig3
+        },//End of chartConfig3
+
+        chartConfig4: {
+          options: {
+              //This is the Main Highcharts chart config. Any Highchart options are valid here.
+              //will be overriden by values specified below.
+              chart: {
+                  type: 'column'
+              },
+              tooltip: {
+                  style: {
+                      padding: 10,
+                      fontWeight: 'bold'
+                  }
+              }
+          },
+          //The below properties are watched separately for changes.
+
+          //Series object (optional) - a list of series using normal highcharts series options.
+          /*
+          series: [{
+             data: (function () {
+                    var data = [];
+                        $http.get('v1/search?q="morgan stanley"&format=json').then(function(response) {
+                        this.data = response.data.results.index;
+                        // probably need to write a custom rest endpoint here - to get back the values in a specific format perhaps?
+                        //$http.get('v1/resources/estimate-collection-counts.xqy').then(function(response) {
+                        //  this.data = response;
+                        });
+
+                    return data;
+                    }())  
+          }],*/
+          //Title configuration (optional)
+          title: {
+             text: 'Data from ML'
+          },
+          //Boolean to control showng loading status on chart (optional)
+          //Could be a string if you want to show specific loading text.
+          loading: false,
+          //Configuration for the xAxis (optional). Currently only one x axis can be dynamically controlled.
+          //properties currentMin and currentMax provied 2-way binding to the chart's maximimum and minimum
+          xAxis: {
+          currentMin: 0,
+          currentMax: 20000,
+          title: {text: 'values'}
+          },
+          
+            
+          //Whether to use HighStocks instead of HighCharts (optional). Defaults to false.
+          useHighStocks: false,
+          //size (optional) if left out the chart will default to size of the div or something sensible.
+          size: {
+           width: 400,
+           height: 300
+          },
+          //function (optional)
+          func: function (chart) {
+           //setup some logic for the chart
+           // load data with $http request here perhaps
+          }
+        },//End of chartConfig4
+
+        chartConfig5: {
+          options: {
+                zoomType: 'xy'
+            },
+            title: {
+                text: 'SoyaBean Futures ($USD) / Temperature & Rainfall',
+                floating: true,
+                align: 'left',
+                x: 100,
+                y: 20
+            },
+            subtitle: {
+                text: 'Source: WorldClimate.com',
+                floating: true,
+                align: 'left',
+                x: 100,
+                y: 40
+            },
+            xAxis: [{
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                crosshair: true
+            }],
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    format: '{value}°C',
+                    style: {
+                        color: Highcharts.getOptions().colors[2]
+                    }
+                },
+                title: {
+                    text: 'Temperature',
+                    style: {
+                        color: Highcharts.getOptions().colors[2]
+                    }
+                },
+                opposite: true
+
+            }, { // Secondary yAxis
+                gridLineWidth: 0,
+                title: {
+                    text: 'Rainfall',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                labels: {
+                    format: '{value} mm',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                }
+
+            }, { // Tertiary yAxis
+                gridLineWidth: 0,
+                title: {
+                    text: 'Futures ($USD)',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                labels: {
+                    format: '{value} $USD',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                opposite: true
+            }],
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                x: 200,
+                verticalAlign: 'top',
+                y: 55,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+            },
+            size: {
+           width: 800,
+           height: 300
+          },
+            series: [{
+                name: 'Rainfall',
+                type: 'column',
+                yAxis: 1,
+                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+                tooltip: {
+                    valueSuffix: ' mm'
+                }
+
+            }, {
+                name: 'Futures ($USD)',
+                type: 'spline',
+                yAxis: 2,
+                data: [910, 920, 940, 930, 970, 910, 1050, 1045, 1020, 1016, 975, 985],
+                marker: {
+                    enabled: false
+                },
+                dashStyle: 'shortdot',
+                tooltip: {
+                    valueSuffix: ' $USD'
+                }
+
+            }, {
+                name: 'Temperature',
+                type: 'spline',
+                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+                tooltip: {
+                    valueSuffix: ' °C'
+                }
+            }]
+          
+        }
+
 
 
 

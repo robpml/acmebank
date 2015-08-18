@@ -60,14 +60,7 @@
     </search:state>
   </search:operator>
   <search:annotation xmlns="http://marklogic.com/appservices/search">Delta options here</search:annotation>
-  <search:constraint name="eyeColor">
-    <search:range type="xs:string" facet="true" collation="http://marklogic.com/collation/codepoint">
-      <search:facet-option>limit=5</search:facet-option>
-      <search:facet-option>frequency-order</search:facet-option>
-      <search:facet-option>descending</search:facet-option>
-      <search:json-property>eyeColor</search:json-property>
-    </search:range>
-  </search:constraint>
+
 
   <search:constraint name="Approval Status">
     <search:range type="xs:string" facet="true">
@@ -77,7 +70,7 @@
       <search:element ns="" name="ApprovalStatus"/>
     </search:range>
   </search:constraint>
-
+<!--
   <search:constraint name="Match Status">
     <search:range type="xs:string" facet="true">
       <search:facet-option>limit=5</search:facet-option>
@@ -86,7 +79,7 @@
       <search:element ns="" name="MatchStatus"/>
     </search:range>
   </search:constraint>
-
+-->
     <search:constraint name="Book Name">
     <search:range type="xs:string" facet="true">
       <search:facet-option>limit=5</search:facet-option>
@@ -96,7 +89,7 @@
     </search:range>
   </search:constraint>
 
-    <search:constraint name="Trade operation">
+  <search:constraint name="Trade operation">
     <search:range type="xs:string" facet="true">
       <search:facet-option>limit=5</search:facet-option>
       <search:facet-option>frequency-order</search:facet-option>
@@ -104,6 +97,30 @@
       <search:element ns="http://nomura.com/slc" name="TradeOperation"/>
     </search:range>
   </search:constraint>
+
+  <search:constraint name='SLC Creation Date'>
+    <search:range type="xs:dateTime" facet="true">
+      <search:element ns="http://nomura.com/slc" name="SLCDate"/>
+      <search:computed-bucket name="today" ge="P0D" lt="P1D" anchor="now">Today</search:computed-bucket>
+      <search:computed-bucket name="30-days" ge="-P30D" lt="P1D" anchor="now">Last 30 days</search:computed-bucket>
+      <search:computed-bucket name="60-days" ge="-P60D" lt="P1D" anchor="now">Last 60 Days</search:computed-bucket>
+      <search:computed-bucket name="year" ge="-P1Y" lt="P1D" anchor="now">Last Year</search:computed-bucket>
+      <search:computed-bucket name="2year" ge="-P2Y" lt="-P1Y" anchor="now">2 Years Ago</search:computed-bucket>
+    </search:range>
+  </search:constraint>
+
+<!-- 
+  <search:constraint name="SLC Creation date">
+    <search:range type="xs:dateTime" facet="true">
+      <search:bucket lt="2016-01-01T00:00:00Z" ge="2015-01-01T00:00:00Z" name="Post 2015">post2015</search:bucket>
+      <search:bucket lt="2014-07-01T00:00:00Z" ge="2014-01-01T00:00:00Z" name="1H 2014">1H2014</search:bucket>
+      <search:bucket lt="2014-12-31T00:00:00Z" ge="2014-07-01T00:00:00Z" name="2H 2014">2H2014</search:bucket>
+      <search:bucket lt="2014-01-01T00:00:00Z" ge="2013-01-01T00:00:00Z" name="Post 2012">post2012</search:bucket>
+      <search:element name="SLCDate" ns="http://nomura.com/slc"/>
+    </search:range>
+  </search:constraint>
+-->
+
 
   <!-- show all collections as facets -->
   <search:constraint name="Category">
