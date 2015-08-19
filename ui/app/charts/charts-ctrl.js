@@ -44,21 +44,40 @@
         $location.search( mlSearch.getParams() );
 
         var series1 = [];
-        //var series1 = [{data:[],
-        //                name:''}];
 
-        if (model.search && model.search.facets && model.search.facets['Trade operation']) {
-          angular.forEach(model.search.facets['Trade operation'].facetValues, function(value, index) {
-            series1.push(value.count);
-            //series1.push({data:value.count,name:value.name});
+        /* needs to look like this
+          series: [{
+             data: [10],
+             name: 'JPMC'
+            },{
+              data:[20],
+              name:'HSBC'
+            }
+          ]
+        */
+
+        if (model.search && model.search.facets && model.search.facets.Counterparty) {
+          var data1 = [];
+          //angular.forEach(model.search.facets['Counterparty'].facetValues, function(value, index) {
+            angular.forEach(model.search.facets.Counterparty.facetValues, function(value, index) {
+            //series1.push(value.count);
             
-          });
+            series1.push({
+                            data: [value.count],
+                            name: value.name
+                        });
+            
+            });
         }
+        /*
         $scope.chartConfig.series = [{
-             //data: series1.data,
-             //name: series1.name
-             data: series1
+             //data: series1
+
           }];
+        */
+        $scope.chartConfig.series = series1;
+
+        window.console.log($scope.chartConfig.series); 
       }//end of function updateSearchResults
 
       function search(qtext) {
@@ -105,23 +124,30 @@
           //The below properties are watched separately for changes.
 
           //Series object (optional) - a list of series using normal highcharts series options.
-          //series: [{
-             //data: [10, 15, 12, 8, 7]
-          //}],
+          /*
+          series: [{
+             data: [10],
+             name: 'JPMC'
+            },{
+              data:[20],
+              name:'HSBC'
+            }
+          ],
+          */
           //Title configuration (optional)
           title: {
-             text: 'Cancelled Trades per day'
+             text: 'Counterparty Trades'
           },
           //Boolean to control showng loading status on chart (optional)
           //Could be a string if you want to show specific loading text.
           loading: false,
           //Configuration for the xAxis (optional). Currently only one x axis can be dynamically controlled.
           //properties currentMin and currentMax provied 2-way binding to the chart's maximimum and minimum
-          xAxis: {
+          /*xAxis: {/*
           currentMin: 0,
           currentMax: 20,
-          title: {text: 'Trade status pre-cancel'}
-          },
+          title: {text: 'Operation'}
+          },*/
           //Whether to use HighStocks instead of HighCharts (optional). Defaults to false.
           useHighStocks: false,
           //size (optional) if left out the chart will default to size of the div or something sensible.
@@ -477,7 +503,62 @@
                 }
             }]
           
-        }
+        },// end of config
+
+        chartConfigPie: {
+          options: {
+            chart: {
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false,
+              type: 'pie'
+            },
+            title: {
+                text: 'Browser market shares January, 2015 to May, 2015'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: "Brands",
+                colorByPoint: true,
+                data: [{
+                    name: "Microsoft Internet Explorer",
+                    y: 56.33
+                }, {
+                    name: "Chrome",
+                    y: 24.03,
+                    sliced: true,
+                    selected: true
+                }, {
+                    name: "Firefox",
+                    y: 10.38
+                }, {
+                    name: "Safari",
+                    y: 4.77
+                }, {
+                    name: "Opera",
+                    y: 0.91
+                }, {
+                    name: "Proprietary or Undetectable",
+                    y: 0.2
+                }]
+            }]
+          }
+        }//end of chartConfigPie
 
 
 

@@ -61,6 +61,14 @@
   </search:operator>
   <search:annotation xmlns="http://marklogic.com/appservices/search">Delta options here</search:annotation>
 
+  <search:constraint name="Counterparty">
+    <search:range type="xs:string" facet="true">
+      <search:facet-option>limit=5</search:facet-option>
+      <search:facet-option>frequency-order</search:facet-option>
+      <search:facet-option>descending</search:facet-option>
+      <search:element ns="http://www.fpml.org/2009/FpML-4-7"  name="partyId"/>
+    </search:range>
+  </search:constraint>
 
   <search:constraint name="Approval Status">
     <search:range type="xs:string" facet="true">
@@ -70,7 +78,7 @@
       <search:element ns="" name="ApprovalStatus"/>
     </search:range>
   </search:constraint>
-<!--
+
   <search:constraint name="Match Status">
     <search:range type="xs:string" facet="true">
       <search:facet-option>limit=5</search:facet-option>
@@ -79,13 +87,13 @@
       <search:element ns="" name="MatchStatus"/>
     </search:range>
   </search:constraint>
--->
-    <search:constraint name="Book Name">
+
+  <search:constraint name="Book Name">
     <search:range type="xs:string" facet="true">
       <search:facet-option>limit=5</search:facet-option>
       <search:facet-option>frequency-order</search:facet-option>
       <search:facet-option>descending</search:facet-option>
-      <search:element ns="http://nomura.com/slc" name="BookName"/>
+      <search:element ns="http://acmebank.com/slc" name="BookName"/>
     </search:range>
   </search:constraint>
 
@@ -94,13 +102,13 @@
       <search:facet-option>limit=5</search:facet-option>
       <search:facet-option>frequency-order</search:facet-option>
       <search:facet-option>descending</search:facet-option>
-      <search:element ns="http://nomura.com/slc" name="TradeOperation"/>
+      <search:element ns="http://acmebank.com/slc" name="TradeOperation"/>
     </search:range>
   </search:constraint>
 
-  <search:constraint name='SLC Creation Date'>
-    <search:range type="xs:dateTime" facet="true">
-      <search:element ns="http://nomura.com/slc" name="SLCDate"/>
+  <search:constraint name='Trade Date'>
+    <search:range type="xs:date" facet="true">
+      <search:element ns="http://www.fpml.org/2009/FpML-4-7" name="tradeDate"/>
       <search:computed-bucket name="today" ge="P0D" lt="P1D" anchor="now">Today</search:computed-bucket>
       <search:computed-bucket name="30-days" ge="-P30D" lt="P1D" anchor="now">Last 30 days</search:computed-bucket>
       <search:computed-bucket name="60-days" ge="-P60D" lt="P1D" anchor="now">Last 60 Days</search:computed-bucket>
@@ -109,18 +117,47 @@
     </search:range>
   </search:constraint>
 
-<!-- 
-  <search:constraint name="SLC Creation date">
-    <search:range type="xs:dateTime" facet="true">
-      <search:bucket lt="2016-01-01T00:00:00Z" ge="2015-01-01T00:00:00Z" name="Post 2015">post2015</search:bucket>
-      <search:bucket lt="2014-07-01T00:00:00Z" ge="2014-01-01T00:00:00Z" name="1H 2014">1H2014</search:bucket>
-      <search:bucket lt="2014-12-31T00:00:00Z" ge="2014-07-01T00:00:00Z" name="2H 2014">2H2014</search:bucket>
-      <search:bucket lt="2014-01-01T00:00:00Z" ge="2013-01-01T00:00:00Z" name="Post 2012">post2012</search:bucket>
-      <search:element name="SLCDate" ns="http://nomura.com/slc"/>
+  <search:constraint name="Currency">
+    <search:range type="xs:string" facet="true">
+      <search:facet-option>limit=5</search:facet-option>
+      <search:facet-option>frequency-order</search:facet-option>
+      <search:facet-option>descending</search:facet-option>
+      <search:element ns="http://www.fpml.org/2009/FpML-4-7" name="currency"/>
     </search:range>
   </search:constraint>
+
+
+<!--
+  <search:constraint name='Termination Date'>
+    <search:range type="xs:date" facet="true">
+      <search:path-index xmlns:fpml="http://www.fpml.org/2009/FpML-4-7">fpml:terminationDate/fpml:unadjustedDate</search:path-index>
+      <search:computed-bucket name="today" ge="P0D" lt="P1D" anchor="now">Today</search:computed-bucket>
+      <search:computed-bucket name="30-days" ge="-P30D" lt="P1D" anchor="now">Last 30 days</search:computed-bucket>
+      <search:computed-bucket name="60-days" ge="-P60D" lt="P1D" anchor="now">Last 60 Days</search:computed-bucket>
+      <search:computed-bucket name="year" ge="-P1Y" lt="P1D" anchor="now">Last Year</search:computed-bucket>
+      <search:computed-bucket name="2year" ge="-P2Y" lt="-P1Y" anchor="now">2 Years Ago</search:computed-bucket>
+      <search:computed-bucket name="30+days" ge="+P30D" lt="P1D" anchor="now">Last 30 days</search:computed-bucket>
+      <search:computed-bucket name="60+days" ge="+P60D" lt="P1D" anchor="now">Last 60 Days</search:computed-bucket>
+      <search:computed-bucket name="year" ge="+P1Y" lt="P1D" anchor="now">This coming Year</search:computed-bucket>
+      <search:computed-bucket name="2year" ge="+P2Y" lt="+P1Y" anchor="now">2 Years Time</search:computed-bucket>
+    </search:range>
+  </search:constraint>
+
 -->
 
+
+  <search:constraint name='SLC Creation Date'>
+    <search:range type="xs:dateTime" facet="true">
+      <search:element ns="http://acmebank.com/slc" name="SLCDate"/>
+      <search:computed-bucket name="today" ge="P0D" lt="P1D" anchor="now">Today</search:computed-bucket>
+      <search:computed-bucket name="30-days" ge="-P30D" lt="P1D" anchor="now">Last 30 days</search:computed-bucket>
+      <search:computed-bucket name="60-days" ge="-P60D" lt="P1D" anchor="now">Last 60 Days</search:computed-bucket>
+      <search:computed-bucket name="year" ge="-P1Y" lt="P1D" anchor="now">Last Year</search:computed-bucket>
+      <search:computed-bucket name="2year" ge="-P2Y" lt="-P1Y" anchor="now">2 Years Ago</search:computed-bucket>
+      <search:bucket lt="2014-03-01T00:00:00Z" ge="2014-02-01T00:00:00Z" name="Feb2014">Feb 2014</search:bucket>
+      <search:bucket lt="2014-04-01T00:00:00Z" ge="2014-03-01T00:00:00Z" name="March2014">March 2014</search:bucket>
+    </search:range>
+  </search:constraint>
 
   <!-- show all collections as facets -->
   <search:constraint name="Category">

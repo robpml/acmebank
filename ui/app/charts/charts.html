@@ -3,9 +3,21 @@
 <div class="row">
   <tabset>
     <tab>
-      <tab-heading>Open Trades</tab-heading>
+      <tab-heading>Counterparty Trade Activity</tab-heading>
       <div class="panel.panel-default">
         <highchart config="chartConfig"></highchart>
+      </div>
+    </tab>
+    <tab>
+      <tab-heading>Positions</tab-heading>
+      <div class="panel.panel-default">
+        <highchart config="chartConfigPositions"></highchart>
+      </div>
+    </tab>
+    <tab>
+      <tab-heading>Total Asset Value and Credit Risk</tab-heading>
+      <div class="panel.panel-default">
+        <highchart config="chartConfigTotalAssetValue"></highchart>
       </div>
     </tab>
     <tab>
@@ -36,6 +48,12 @@
       <tab-heading>test</tab-heading>
       <div class="panel.panel-default">
         <highchart config="chartConfig4"></highchart>
+      </div>
+    </tab>
+    <tab>
+      <tab-heading>Pie</tab-heading>
+      <div class="panel.panel-default">
+        <highchart config="chartConfigPie"></highchart>
       </div>
     </tab>
   </tabset>
